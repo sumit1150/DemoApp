@@ -2,7 +2,11 @@ package com.demoapp;
 
 import android.app.Application;
 
+import com.clevertap.android.pushtemplates.PushTemplateNotificationHandler;
 import com.clevertap.android.sdk.ActivityLifecycleCallback;
+import com.clevertap.android.sdk.CleverTapAPI;
+import com.clevertap.android.sdk.interfaces.NotificationHandler;
+import com.clevertap.react.CleverTapApplication;
 import com.clevertap.react.CleverTapPackage;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
@@ -13,7 +17,7 @@ import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
 import java.util.List;
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends CleverTapApplication implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
       new DefaultReactNativeHost(this) {
@@ -53,9 +57,15 @@ public class MainApplication extends Application implements ReactApplication {
     return mReactNativeHost;
   }
 
-  @Override
+    @Override
+    protected List<ReactPackage> getPackages() {
+        return null;
+    }
+
+    @Override
   public void onCreate() {
       ActivityLifecycleCallback.register(this);
+      CleverTapAPI.setNotificationHandler((NotificationHandler)new PushTemplateNotificationHandler());
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {

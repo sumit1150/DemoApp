@@ -51,6 +51,7 @@ public class MyFcmMessageListenerService extends FirebaseMessagingService {
 
                 if (info.fromCleverTap) {
                     new CTFcmMessageHandler().createNotification(getApplicationContext(), remoteMessage);
+                    CleverTapAPI.createNotification(getApplicationContext(), extras);
 
                 } else {
                     // not from CleverTap handle yourself or pass to another provider
