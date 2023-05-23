@@ -32,7 +32,7 @@ public class MyFcmMessageListenerService extends FirebaseMessagingService {
         //Custom Rendering Notification comes from CleverTap
         //  new CTFcmMessageHandler().createNotification(getApplicationContext(), remoteMessage);
         // new CTFcmMessageHandler().processPushAmp(getApplicationContext(), remoteMessage);
-        super.onMessageReceived(remoteMessage);
+      super.onMessageReceived(remoteMessage);
 
 
 //Custom Handling
@@ -111,10 +111,7 @@ public class MyFcmMessageListenerService extends FirebaseMessagingService {
 
     }
 
-    public void customRender(){
 
-
-    }
 
 
     @Override
