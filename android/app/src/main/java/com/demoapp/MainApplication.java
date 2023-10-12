@@ -66,6 +66,7 @@ public class MainApplication extends CleverTapApplication implements ReactApplic
   public void onCreate() {
       ActivityLifecycleCallback.register(this);
       CleverTapAPI.setNotificationHandler((NotificationHandler)new PushTemplateNotificationHandler());
+      CleverTapAPI.setDebugLevel(CleverTapAPI.LogLevel.DEBUG); 
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {

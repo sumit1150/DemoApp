@@ -6,28 +6,67 @@
  */
 
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 //import { StyleSheet, Text, View } from 'react-native';
 import {
-   Text,View,StyleSheet,Button,Image
+   Text,View,StyleSheet,Button,Image,Linking
  } from 'react-native';
 
  const CleverTap = require('clevertap-react-native');
- const Stack = createNativeStackNavigator();
+ //const Stack = createNativeStackNavigator();
 
 
  class App extends React.Component {
   render() {
-   CleverTap.createNotificationChannel("General", "General", "General", 5, true);
-   CleverTap.setDebugLevel(3);
-   
- CleverTap.addListener(CleverTap.CleverTapPushNotificationClicked, (e)=>{
-  console.log("Push Callback",e);
+    CleverTap.setDebugLevel(3);    
+   CleverTap.addListener(CleverTap.CleverTapPushNotificationClicked, (e)=>{
+    CleverTap.recordEvent('Custom_Notification_Clicked_event');
+    console.log("e value",e);
+  });
+
+  CleverTap.createNotificationChannel("General", "General", "General", 5, true);
+  CleverTap.recordEvent('HomePage');
+
+  //Deeplink implimentation start
+
+function _handleOpenUrl(event, from)
+{
+ console.log('handleOpenUrl', event.url, from);
+ if(event.url=='ctdl://ct.com/deep'){
+ //  navigation.navigate('Home', { name: 'Jane' })
+ console.log('Deeplink found: ',event.url)
+ }else{
+   console.log('Deeplink failed')
+ }
+ 
+}
+
+// Listener to handle incoming deep links
+Linking.addEventListener('url', _handleOpenUrl);
+
+/// this handles the case where a deep link launches the application
+Linking.getInitialURL().then((url) => {
+    if (url) {
+        console.log('launch url', url);
+        _handleOpenUrl({ url });
+    }
+    else{
+      console.log('No URL found');
+    }
+}).catch(err => console.error('launch url error', err));
+
+// check to see if CleverTap has a launch deep link
+// handles the case where the app is launched from a push notification containing a deep link
+CleverTap.getInitialUrl((err, url) => {
+    if (url) {
+        console.log('CleverTap launch url', url);
+        _handleOpenUrl({ url }, 'CleverTap');
+    } else if (err) {
+        console.log('CleverTap launch url', err);
+    }
 });
 
      return (
-      <NavigationContainer>
+     
       <View style={{flex:1, backgroundColor:'skyblue'}}>
       <View style={{flex:1,height:190}}>
       <Image style={{width:360,height:180}} source={require('./custom_res/c.png')} />
@@ -52,7 +91,6 @@ import {
       </Stack.Navigator> */}
       
      </View>
-     </NavigationContainer>
      );
   }
 }

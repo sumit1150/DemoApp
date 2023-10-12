@@ -43,6 +43,8 @@ target 'DemoApp' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'clevertap-react-native', :path => '../node_modules/clevertap-react-native'
+
   target 'DemoAppTests' do
     inherit! :complete
     # Pods for testing
